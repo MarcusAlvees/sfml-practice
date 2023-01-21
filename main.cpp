@@ -2,7 +2,7 @@
 #include "Headers/Player.hpp"
 #include "Headers/DrawMap.hpp"
 
-sf::RenderWindow window(sf::VideoMode(1280, 720), "Game!");
+sf::RenderWindow window(sf::VideoMode(1280, 736), "Game!");
 float movementSpeed = 2.f;
 sf::RectangleShape shape;
 Player p;

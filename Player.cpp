@@ -56,6 +56,7 @@ void Player::update(sf::RenderWindow& window){
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { 
         playerShape.move( -moveSpeed * deltaTime, 0.f);
     } 
+    
     updateDt();
     updateWindowBounds(window);
 }

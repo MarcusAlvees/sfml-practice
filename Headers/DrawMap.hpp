@@ -12,7 +12,8 @@ class DrawMap
     void setUpTiles();
 
 public:
-    std::vector<GameTile*> row;
+    std::vector<GameTile*> tiles;
+    sf::Image map_sketch;
     int gridLength;
     DrawMap();
     void drawTiles(sf::RenderWindow& window);

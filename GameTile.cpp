@@ -16,6 +16,7 @@ bool GameTile::setUpSprite(std::string textureName) {
         return false;
     }
     spr.setTexture(texture);
-    spr.setTextureRect(sf::IntRect(0, 0, CELL_SIZE, CELL_SIZE));
+    spr.setTextureRect(sf::IntRect(0, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE));
+    spr.setScale(sf::Vector2f(2.f, 2.f));
     return true;
 }
