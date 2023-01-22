@@ -37,7 +37,7 @@ void Player::updateWindowBounds(sf::RenderWindow& window) {
     }
     if(playerBounds.top + playerBounds.height >= window.getSize().y) {
         playerShape.setPosition(sf::Vector2f(playerShape.getPosition().x, window.getSize().y - playerBounds.height));
-        ground = true;
+        //ground = true;
     }
 }
 
@@ -55,15 +55,32 @@ void Player::gravity_calc() {
 
 void Player::collisionCheck() {
     sf::FloatRect playerCollisions = playerShape.getGlobalBounds();
-    for(auto tile : map.tiles) {
-        sf::FloatRect tilesCollision = tile->spr.getGlobalBounds();
-        sf::FloatRect next = playerCollisions;
-        next.top -= playerShape.getSize().y + velocity.y;
-        //CHECK DOWN COLLISION
-        if(tilesCollision.intersects(next)) {
-            ground = true;
-        } else { ground = false; }
+
+    // for(int i; i < map.tiles.size(); i++) {
+    //     sf::FloatRect tilesCollision = map.tiles[i]->spr.getGlobalBounds();
+    //     sf::FloatRect next = playerCollisions;
+    //     next.top += playerCollisions.height;
+    //     //CHECK DOWN COLLISION
+    //     if(next.intersects(tilesCollision)) {
+    //         ground = true;
+    //     } else { ground = false; }
+    // }
+
+    playerGroundCheck = playerShape.getPosition();
+    y = std::floor(playerGroundCheck.y + playerCollisions.height / CELL_SIZE);
+    rows = y;
+    x = std::floor(playerCollisions.left + velocity.x / CELL_SIZE);
+
+    if(map.tiles[x]->collisions_on == true)
+    {
+        velocity.x = 0.f;
     }
+
+    // if(map.tiles[x]->collisions_on == false) {
+    //     ground = true;
+    // } else {
+    //     ground = false;
+    // }
 }
 
 void Player::update(sf::RenderWindow& window){

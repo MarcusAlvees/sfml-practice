@@ -9,6 +9,11 @@ private:
     float vertical_speed;
     float moveSpeed;
     sf::Vector2f velocity;
+    sf::Vector2f playerGroundCheck;
+    float x;
+    float y;
+    int rows;
+
 
     sf::Clock dtClock;
     float deltaTime;
