@@ -8,7 +8,7 @@ private:
     const float GRAVITY = 9.8f; 
     float vertical_speed;
     float moveSpeed;
-    float horizontal_input;
+    sf::Vector2f velocity;
 
     sf::Clock dtClock;
     float deltaTime;
@@ -22,6 +22,7 @@ public:
     void updateWindowBounds(sf::RenderWindow& window);
     void playerSpeed(float horizontal);
     void gravity_calc();
+    void collisionCheck();
     void updateDt();
     void update(sf::RenderWindow& window);
     void render(sf::RenderWindow& window);

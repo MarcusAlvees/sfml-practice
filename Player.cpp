@@ -3,6 +3,9 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Headers/Player.hpp"
+#include "Headers/DrawMap.hpp"
+
+DrawMap map;
 
 Player::Player() {
     initVariables();
@@ -11,11 +14,14 @@ Player::Player() {
 
 void Player::initVariables() {
     this->moveSpeed = 400.f;
+    DrawMap map;
+    velocity.x = 0.f;
+    velocity.y = 0.f;
 }
 void Player::initShape() {
     playerShape.setFillColor(sf::Color::Blue);
     playerShape.setSize(sf::Vector2f(50.f, 50.f));
-    playerShape.setPosition(0.f, 0.f);
+    playerShape.setPosition(50.f, 0.f);
 }
 
 void Player::updateWindowBounds(sf::RenderWindow& window) {
@@ -41,22 +47,38 @@ void Player::updateDt() {
 
 void Player::gravity_calc() {
     if(ground == false) {
-        vertical_speed += deltaTime * GRAVITY;
-        playerShape.move(0.f, vertical_speed);
+        velocity.y += deltaTime * GRAVITY;
+        
     }
-    else { vertical_speed = 0.f; }
+    else { velocity.y = 0.f; }
+}
+
+void Player::collisionCheck() {
+    sf::FloatRect playerCollisions = playerShape.getGlobalBounds();
+    for(auto tile : map.tiles) {
+        sf::FloatRect tilesCollision = tile->spr.getGlobalBounds();
+        sf::FloatRect next = playerCollisions;
+        next.top -= playerShape.getSize().y + velocity.y;
+        //CHECK DOWN COLLISION
+        if(tilesCollision.intersects(next)) {
+            ground = true;
+        } else { ground = false; }
+    }
 }
 
 void Player::update(sf::RenderWindow& window){
     gravity_calc();
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { 
-        playerShape.move( moveSpeed * deltaTime, 0.f);
+        velocity.x = moveSpeed * deltaTime;
     } 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { 
-        playerShape.move( -moveSpeed * deltaTime, 0.f);
-    } 
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { 
+        velocity.x = -moveSpeed * deltaTime;
+    } else { velocity.x = 0.f; }
+    collisionCheck();
     
+    playerShape.move(velocity);
+
     updateDt();
     updateWindowBounds(window);
 }
