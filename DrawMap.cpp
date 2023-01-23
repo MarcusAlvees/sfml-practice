@@ -16,9 +16,16 @@ void DrawMap::setUpTiles() {
     {
         for (int x = 0; x < map_sketch.getSize().x; x++)
         {
-            if(map_sketch.getPixel(x, y) == sf::Color(0, 0, 0, 255))
+            sf::Color pixel = map_sketch.getPixel(x, y);
+            if(pixel.a == 255)
             {
-                tiles.push_back(new GameTile("Resources/brick.png", CELL_SIZE * x, CELL_SIZE * y, true));
+                if(pixel == sf::Color(0, 0, 0, 255))
+                {
+                    tiles.push_back(new GameTile("Resources/brick.png", CELL_SIZE * x, CELL_SIZE * y, true, true));
+                }
+            }
+            else {
+                tiles.push_back(new GameTile(" ", CELL_SIZE * x, CELL_SIZE * y, false, false));
             }
         }
     }
@@ -27,6 +34,8 @@ void DrawMap::setUpTiles() {
 void DrawMap::drawTiles(sf::RenderWindow& window) {
     for (int i = 0; i < tiles.size(); i++)
     {
-        window.draw(tiles[i]->spr);
+        if(tiles[i]->needToDraw == true) {
+            window.draw(tiles[i]->spr);
+        }
     }
 }

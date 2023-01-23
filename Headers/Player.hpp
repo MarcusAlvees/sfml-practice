@@ -10,8 +10,9 @@ private:
     float moveSpeed;
     sf::Vector2f velocity;
     sf::Vector2f playerGroundCheck;
-    float x;
-    float y;
+    float right;
+    float bottom;
+    float left;
     int rows;
 
 

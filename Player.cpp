@@ -65,16 +65,35 @@ void Player::collisionCheck() {
     //         ground = true;
     //     } else { ground = false; }
     // }
+    const sf::FloatRect playerBounds = playerShape.getGlobalBounds();
 
     playerGroundCheck = playerShape.getPosition();
-    y = std::floor(playerGroundCheck.y + playerCollisions.height / CELL_SIZE);
-    rows = y;
-    x = std::floor(playerCollisions.left + velocity.x / CELL_SIZE);
+    bottom = std::floor(((playerShape.getPosition().y + playerShape.getSize().y) + velocity.y) / CELL_SIZE);
+    rows = ((playerShape.getPosition().y + playerShape.getSize().y) / CELL_SIZE) - 1;
+    right = std::floor(((playerShape.getPosition().x + playerShape.getSize().x) + velocity.x) / CELL_SIZE);
+    left = std::floor((playerShape.getPosition().x + velocity.x) / CELL_SIZE);
 
-    if(map.tiles[x]->collisions_on == true)
+    if(map.tiles[(rows * 40) + right]->collisions_on == true)
+    {
+        std::cout << right;
+        velocity.x = 0.f;
+    }
+
+    if(map.tiles[left + (rows * 40)]->collisions_on == true)
     {
         velocity.x = 0.f;
     }
+
+    if(map.tiles[bottom * 40 + 1]->collisions_on == true)
+    {
+        ground = true;
+        std::cout << rows * 40 << "\n";
+
+    }
+    else {
+        ground = false;
+    }
+
 
     // if(map.tiles[x]->collisions_on == false) {
     //     ground = true;
