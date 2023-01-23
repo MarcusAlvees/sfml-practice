@@ -87,6 +87,7 @@ void Player::collisionCheck() {
     if(map.tiles[bottom * 40 + 1]->collisions_on == true)
     {
         ground = true;
+        velocity.y = 0.f;
         std::cout << rows * 40 << "\n";
 
     }
