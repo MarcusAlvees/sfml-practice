@@ -20,7 +20,7 @@ void Player::initVariables() {
 }
 void Player::initShape() {
     playerShape.setFillColor(sf::Color::Blue);
-    playerShape.setSize(sf::Vector2f(50.f, 50.f));
+    playerShape.setSize(sf::Vector2f(32.f, 64.f));
     playerShape.setPosition(50.f, 0.f);
 }
 
@@ -47,24 +47,13 @@ void Player::updateDt() {
 
 void Player::gravity_calc() {
     if(ground == false) {
-        velocity.y += deltaTime * GRAVITY;
-        
+        velocity.y += (deltaTime * GRAVITY) * deltaTime;
     }
     else { velocity.y = 0.f; }
 }
 
 void Player::collisionCheck() {
     sf::FloatRect playerCollisions = playerShape.getGlobalBounds();
-
-    // for(int i; i < map.tiles.size(); i++) {
-    //     sf::FloatRect tilesCollision = map.tiles[i]->spr.getGlobalBounds();
-    //     sf::FloatRect next = playerCollisions;
-    //     next.top += playerCollisions.height;
-    //     //CHECK DOWN COLLISION
-    //     if(next.intersects(tilesCollision)) {
-    //         ground = true;
-    //     } else { ground = false; }
-    // }
     const sf::FloatRect playerBounds = playerShape.getGlobalBounds();
 
     playerGroundCheck = playerShape.getPosition();
@@ -73,13 +62,12 @@ void Player::collisionCheck() {
     right = std::floor(((playerShape.getPosition().x + playerShape.getSize().x) + velocity.x) / CELL_SIZE);
     left = std::floor((playerShape.getPosition().x + velocity.x) / CELL_SIZE);
 
-    if(map.tiles[(rows * 40) + right]->collisions_on == true)
+    if(map.tiles[(rows * 40) + right]->collisions_on == true || map.tiles[((rows - 1) * 40) + right]->collisions_on == true)
     {
-        std::cout << right;
         velocity.x = 0.f;
     }
 
-    if(map.tiles[left + (rows * 40)]->collisions_on == true)
+    if(map.tiles[left + (rows * 40)]->collisions_on == true || map.tiles[left + ((rows - 1) * 40)]->collisions_on == true)
     {
         velocity.x = 0.f;
     }
@@ -88,8 +76,6 @@ void Player::collisionCheck() {
     {
         ground = true;
         velocity.y = 0.f;
-        std::cout << rows * 40 << "\n";
-
     }
     else {
         ground = false;
@@ -106,10 +92,10 @@ void Player::collisionCheck() {
 void Player::update(sf::RenderWindow& window){
     gravity_calc();
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { 
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { 
         velocity.x = moveSpeed * deltaTime;
     } 
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { 
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { 
         velocity.x = -moveSpeed * deltaTime;
     } else { velocity.x = 0.f; }
     collisionCheck();

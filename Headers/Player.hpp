@@ -5,7 +5,7 @@ class Player
 private:
     bool ground;
 
-    const float GRAVITY = 9.8f; 
+    const float GRAVITY = 300.f; 
     float vertical_speed;
     float moveSpeed;
     sf::Vector2f velocity;
