@@ -9,3 +9,5 @@ constexpr unsigned int WINDOW_WIDTH = 1280;
 constexpr unsigned int GRID_SIZE_X = WINDOW_WIDTH / CELL_SIZE;
 constexpr unsigned int GRID_SIZE_Y = WINDOW_HEIGHT / CELL_SIZE;
 
+constexpr float PLAYER_JUMP_FORCE = -3.f;
+

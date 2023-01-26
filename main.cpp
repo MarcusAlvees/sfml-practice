@@ -23,7 +23,7 @@ int main()
         }
         p.update(window);
 
-        window.clear();
+        window.clear(sf::Color(102, 135, 255, 255));
         mapTiles.drawTiles(window);
         p.render(window);
         window.display();

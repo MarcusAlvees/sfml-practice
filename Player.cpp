@@ -47,7 +47,7 @@ void Player::updateDt() {
 
 void Player::gravity_calc() {
     if(ground == false) {
-        velocity.y += (deltaTime * GRAVITY) * deltaTime;
+        velocity.y += ((deltaTime * GRAVITY) * 4)* deltaTime;
     }
     else { velocity.y = 0.f; }
 }
@@ -71,33 +71,45 @@ void Player::collisionCheck() {
     {
         velocity.x = 0.f;
     }
-
-    if(map.tiles[bottom * 40 + 1]->collisions_on == true)
+    
+    if(playerShape.getPosition().y > 0.f && playerShape.getPosition().y < WINDOW_HEIGHT)
     {
-        ground = true;
-        velocity.y = 0.f;
+        if(map.tiles[bottom * 40 + 1]->collisions_on == true && velocity.y > 0.f)
+        {
+            ground = true;
+            amountOfJumps = 0;
+            jumpTimer = 0.f;
+            velocity.y = 0.f;
+        }
+        else {
+            ground = false;
+        }
     }
-    else {
-        ground = false;
-    }
-
-
-    // if(map.tiles[x]->collisions_on == false) {
-    //     ground = true;
-    // } else {
-    //     ground = false;
-    // }
 }
 
-void Player::update(sf::RenderWindow& window){
-    gravity_calc();
-
+void Player::playerInputs() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { 
         velocity.x = moveSpeed * deltaTime;
     } 
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { 
         velocity.x = -moveSpeed * deltaTime;
     } else { velocity.x = 0.f; }
+
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && amountOfJumps < 1) {
+        if(jumpTimer > limitJump) {
+            amountOfJumps++;
+            return;
+        }
+        else{
+            jumpTimer += deltaTime;
+            velocity.y = PLAYER_JUMP_FORCE;
+        }
+    } else { amountOfJumps++; }
+}
+
+void Player::update(sf::RenderWindow& window){
+    gravity_calc();
+    playerInputs();
     collisionCheck();
     
     playerShape.move(velocity);
