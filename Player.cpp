@@ -47,7 +47,7 @@ void Player::updateDt() {
 
 void Player::gravity_calc() {
     if(ground == false) {
-        velocity.y += ((deltaTime * GRAVITY) * 4)* deltaTime;
+        velocity.y += ((deltaTime * GRAVITY) * 5)* deltaTime;
     }
     else { velocity.y = 0.f; }
 }
@@ -57,24 +57,19 @@ void Player::collisionCheck() {
     const sf::FloatRect playerBounds = playerShape.getGlobalBounds();
 
     playerGroundCheck = playerShape.getPosition();
-    bottom = std::floor(((playerShape.getPosition().y + playerShape.getSize().y) + velocity.y) / CELL_SIZE);
     rows = ((playerShape.getPosition().y + playerShape.getSize().y) / CELL_SIZE) - 1;
     right = std::floor(((playerShape.getPosition().x + playerShape.getSize().x) + velocity.x) / CELL_SIZE);
     left = std::floor((playerShape.getPosition().x + velocity.x) / CELL_SIZE);
+    bottom = std::floor(((playerShape.getPosition().y + playerShape.getSize().y) + velocity.y) / CELL_SIZE);
 
-    if(map.tiles[(rows * 40) + right]->collisions_on == true || map.tiles[((rows - 1) * 40) + right]->collisions_on == true)
-    {
-        velocity.x = 0.f;
-    }
-
-    if(map.tiles[left + (rows * 40)]->collisions_on == true || map.tiles[left + ((rows - 1) * 40)]->collisions_on == true)
+    if((map.tiles[(rows * 40) + right]->collisions_on == true || map.tiles[(((rows + 1) * 40)) + right]->collisions_on == true) || (map.tiles[left + (rows * 40)]->collisions_on == true || map.tiles[left + (((rows + 1) * 40))]->collisions_on == true))
     {
         velocity.x = 0.f;
     }
     
     if(playerShape.getPosition().y > 0.f && playerShape.getPosition().y < WINDOW_HEIGHT)
     {
-        if(map.tiles[bottom * 40 + 1]->collisions_on == true && velocity.y > 0.f)
+        if((map.tiles[(bottom * 40) + (std::floor(playerShape.getPosition().x / CELL_SIZE))]->collisions_on == true && velocity.y > 0.f) || (map.tiles[(bottom * 40) + (std::floor((playerShape.getPosition().x + playerShape.getSize().x) / CELL_SIZE))]->collisions_on == true && velocity.y > 0.f))
         {
             ground = true;
             amountOfJumps = 0;

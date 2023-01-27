@@ -8,7 +8,7 @@ DrawMap::DrawMap() {
 }
 
 void DrawMap::initialState() {
-    map_sketch.loadFromFile("Resources/testmap.png");    
+    map_sketch.loadFromFile("Resources/map1.png");    
 }
 
 void DrawMap::setUpTiles() {
