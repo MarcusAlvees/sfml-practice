@@ -84,10 +84,10 @@ void Player::collisionCheck() {
 
 void Player::playerInputs() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { 
-        velocity.x = moveSpeed * deltaTime;
+        velocity.x = -moveSpeed * deltaTime;
     } 
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { 
-        velocity.x = -moveSpeed * deltaTime;
+        velocity.x = moveSpeed * deltaTime;
     } else { velocity.x = 0.f; }
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && amountOfJumps < 1) {
@@ -106,8 +106,11 @@ void Player::update(sf::RenderWindow& window){
     gravity_calc();
     playerInputs();
     collisionCheck();
+
+    camPos += velocity.x;
+    //std::cout << camPos;
     
-    playerShape.move(velocity);
+    playerShape.move(0.f, velocity.y);
 
     updateDt();
     updateWindowBounds(window);

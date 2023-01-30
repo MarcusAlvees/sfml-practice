@@ -1,5 +1,8 @@
 #include "Headers/DrawMap.hpp"
 #include "Headers/Global.hpp"
+#include "Headers/Player.hpp"
+
+Player playerScript;
 
 DrawMap::DrawMap() {
     gridLength = 16;
@@ -8,10 +11,11 @@ DrawMap::DrawMap() {
 }
 
 void DrawMap::initialState() {
-    map_sketch.loadFromFile("Resources/map1.png");    
+    map_sketch.loadFromFile("Resources/map2.png");    
 }
 
 void DrawMap::setUpTiles() {
+    tiles.clear();
     for (int y = 0; y < map_sketch.getSize().y; y++)
     {
         for (int x = 0; x < map_sketch.getSize().x; x++)
@@ -31,9 +35,10 @@ void DrawMap::setUpTiles() {
     }
 }
 
-void DrawMap::drawTiles(sf::RenderWindow& window) {
+void DrawMap::drawTiles(sf::RenderWindow& window, float cam_x) {
     for (int i = 0; i < tiles.size(); i++)
     {
+        tiles[i]->spr.setPosition(tiles[i]->pos.x + cam_x, tiles[i]->pos.y);
         if(tiles[i]->needToDraw == true) {
             window.draw(tiles[i]->spr);
         }

@@ -26,6 +26,7 @@ private:
 
     sf::RectangleShape playerShape;
 public:
+    float camPos;
     void initVariables();
     void initShape();
     Player();

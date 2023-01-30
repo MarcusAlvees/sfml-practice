@@ -7,7 +7,6 @@ GameTile::GameTile(std::string textureName, float x, float y, bool collisions, b
         return;
     }
     pos = sf::Vector2f(x, y);
-    spr.setPosition(pos);
     collisions_on = collisions;
     needToDraw = drawNeeded;
 }

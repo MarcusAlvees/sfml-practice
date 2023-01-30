@@ -9,12 +9,12 @@ class DrawMap
 {
     sf::Vector2i playerPos;
     void initialState();
-    void setUpTiles();
 
 public:
+    void setUpTiles();
     std::vector<GameTile*> tiles;
     sf::Image map_sketch;
     int gridLength;
     DrawMap();
-    void drawTiles(sf::RenderWindow& window);
+    void drawTiles(sf::RenderWindow& window, float cam_x);
 };

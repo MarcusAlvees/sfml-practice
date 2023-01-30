@@ -21,10 +21,11 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+        //mapTiles.setUpTiles();
         p.update(window);
 
         window.clear(sf::Color(102, 135, 255, 255));
-        mapTiles.drawTiles(window);
+        mapTiles.drawTiles(window, p.camPos);
         p.render(window);
         window.display();
     }
