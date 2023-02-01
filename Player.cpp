@@ -21,7 +21,7 @@ void Player::initVariables() {
 void Player::initShape() {
     playerShape.setFillColor(sf::Color::Blue);
     playerShape.setSize(sf::Vector2f(32.f, 64.f));
-    playerShape.setPosition(50.f, 0.f);
+    playerShape.setPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 }
 
 void Player::updateWindowBounds(sf::RenderWindow& window) {
@@ -58,18 +58,21 @@ void Player::collisionCheck() {
 
     playerGroundCheck = playerShape.getPosition();
     rows = ((playerShape.getPosition().y + playerShape.getSize().y) / CELL_SIZE) - 1;
-    right = std::floor(((playerShape.getPosition().x + playerShape.getSize().x) + velocity.x) / CELL_SIZE);
-    left = std::floor((playerShape.getPosition().x + velocity.x) / CELL_SIZE);
+    right = std::floor((((-camPos + playerShape.getPosition().x) + playerShape.getSize().x) - velocity.x) / CELL_SIZE);
+    left = std::floor(((-camPos + playerShape.getPosition().x) - velocity.x) / CELL_SIZE);
     bottom = std::floor(((playerShape.getPosition().y + playerShape.getSize().y) + velocity.y) / CELL_SIZE);
+    top = std::floor((playerShape.getPosition().y + velocity.y) / CELL_SIZE);
 
+    //RIGHT AND LEFT COLLISSIONS
     if((map.tiles[(rows * 40) + right]->collisions_on == true || map.tiles[(((rows + 1) * 40)) + right]->collisions_on == true) || (map.tiles[left + (rows * 40)]->collisions_on == true || map.tiles[left + (((rows + 1) * 40))]->collisions_on == true))
     {
         velocity.x = 0.f;
     }
     
+    //BOTTOM COLLISION
     if(playerShape.getPosition().y > 0.f && playerShape.getPosition().y < WINDOW_HEIGHT)
     {
-        if((map.tiles[(bottom * 40) + (std::floor(playerShape.getPosition().x / CELL_SIZE))]->collisions_on == true && velocity.y > 0.f) || (map.tiles[(bottom * 40) + (std::floor((playerShape.getPosition().x + playerShape.getSize().x) / CELL_SIZE))]->collisions_on == true && velocity.y > 0.f))
+        if((map.tiles[(bottom * 40) + (std::floor((-camPos + playerShape.getPosition().x) / CELL_SIZE))]->collisions_on == true && velocity.y > 0.f) || (map.tiles[(bottom * 40) + (std::floor(((-camPos + playerShape.getPosition().x) + playerShape.getSize().x) / CELL_SIZE))]->collisions_on == true && velocity.y > 0.f))
         {
             ground = true;
             amountOfJumps = 0;
@@ -78,6 +81,11 @@ void Player::collisionCheck() {
         }
         else {
             ground = false;
+        }
+
+        if((map.tiles[(top * 40) + (std::floor((-camPos + playerShape.getPosition().x) / CELL_SIZE))]->collisions_on == true && velocity.y < 0.f) || (map.tiles[(top * 40) + (std::floor(((-camPos + playerShape.getPosition().x) + playerShape.getSize().x) / CELL_SIZE))]->collisions_on == true && velocity.y < 0.f))
+        {
+            velocity.y = 0.f;
         }
     }
 }

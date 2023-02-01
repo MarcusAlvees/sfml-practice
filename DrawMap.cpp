@@ -11,7 +11,7 @@ DrawMap::DrawMap() {
 }
 
 void DrawMap::initialState() {
-    map_sketch.loadFromFile("Resources/map2.png");    
+    map_sketch.loadFromFile("Resources/map1.png");    
 }
 
 void DrawMap::setUpTiles() {
@@ -39,8 +39,10 @@ void DrawMap::drawTiles(sf::RenderWindow& window, float cam_x) {
     for (int i = 0; i < tiles.size(); i++)
     {
         tiles[i]->spr.setPosition(tiles[i]->pos.x + cam_x, tiles[i]->pos.y);
-        if(tiles[i]->needToDraw == true) {
-            window.draw(tiles[i]->spr);
+        if(tiles[i]->spr.getPosition().x > -32.f && tiles[i]->spr.getPosition().x < 1280.f) {
+            if(tiles[i]->needToDraw == true) {
+                window.draw(tiles[i]->spr);
+            }
         }
     }
 }

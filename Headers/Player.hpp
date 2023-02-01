@@ -12,7 +12,7 @@ private:
     sf::Vector2f playerGroundCheck;
     float right;
     float bottom;
-    float bottomRight;
+    float top;
     float left;
     int rows;
 
