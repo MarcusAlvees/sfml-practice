@@ -86,6 +86,7 @@ void Player::collisionCheck() {
         if((map.tiles[(top * 40) + (std::floor((-camPos + playerShape.getPosition().x) / CELL_SIZE))]->collisions_on == true && velocity.y < 0.f) || (map.tiles[(top * 40) + (std::floor(((-camPos + playerShape.getPosition().x) + playerShape.getSize().x) / CELL_SIZE))]->collisions_on == true && velocity.y < 0.f))
         {
             velocity.y = 0.f;
+            jumpTimer = limitJump + 1.f;
         }
     }
 }
