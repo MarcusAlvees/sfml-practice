@@ -7,7 +7,6 @@ private:
 
     const float GRAVITY = 300.f; 
     float vertical_speed;
-    float moveSpeed;
     sf::Vector2f velocity;
     sf::Vector2f playerGroundCheck;
     float right;
@@ -19,6 +18,10 @@ private:
     int amountOfJumps;
     float jumpTimer;
     float limitJump = 0.3f;
+
+    float speedClamp = 400.f;
+    float moveSpeed;
+    float moveAcceleration = 5.f;
 
 
     sf::Clock dtClock;

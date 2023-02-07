@@ -13,7 +13,6 @@ Player::Player() {
 }
 
 void Player::initVariables() {
-    this->moveSpeed = 400.f;
     DrawMap map;
     velocity.x = 0.f;
     velocity.y = 0.f;
@@ -93,11 +92,19 @@ void Player::collisionCheck() {
 
 void Player::playerInputs() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { 
+        moveSpeed += ((deltaTime * speedClamp) * 300) * deltaTime;
+        if(moveSpeed > speedClamp) {
+            moveSpeed = speedClamp;
+        }
         velocity.x = -moveSpeed * deltaTime;
     } 
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { 
+        moveSpeed += ((deltaTime * speedClamp) * 300) * deltaTime;
+        if(moveSpeed > speedClamp) {
+            moveSpeed = speedClamp;
+        }
         velocity.x = moveSpeed * deltaTime;
-    } else { velocity.x = 0.f; }
+    } else { velocity.x = 0.f; moveSpeed = 0.f; }
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && amountOfJumps < 1) {
         if(jumpTimer > limitJump) {
