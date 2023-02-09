@@ -104,7 +104,23 @@ void Player::playerInputs() {
             moveSpeed = speedClamp;
         }
         velocity.x = moveSpeed * deltaTime;
-    } else { velocity.x = 0.f; moveSpeed = 0.f; }
+    } 
+    else { 
+        if(moveSpeed > 0) {
+            moveSpeed -= ((deltaTime * speedClamp) * 300) * deltaTime;
+            if(velocity.x > 0.f)
+            {
+                velocity.x = moveSpeed * deltaTime;
+            }
+            if(velocity.x < 0.f)
+            {
+                velocity.x = -moveSpeed * deltaTime;
+            }
+        }
+        else {
+            velocity.x = 0.f;
+        }
+    }
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && amountOfJumps < 1) {
         if(jumpTimer > limitJump) {
