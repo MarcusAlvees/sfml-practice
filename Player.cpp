@@ -92,33 +92,31 @@ void Player::collisionCheck() {
 
 void Player::playerInputs() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { 
-        moveSpeed += ((deltaTime * speedClamp) * 300) * deltaTime;
-        if(moveSpeed > speedClamp) {
-            moveSpeed = speedClamp;
+        moveSpeed -= ((deltaTime * speedClamp) * 300) * deltaTime;
+        if(moveSpeed < -speedClamp) {
+            moveSpeed = -speedClamp;
         }
-        velocity.x = -moveSpeed * deltaTime;
     } 
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { 
         moveSpeed += ((deltaTime * speedClamp) * 300) * deltaTime;
         if(moveSpeed > speedClamp) {
             moveSpeed = speedClamp;
         }
-        velocity.x = moveSpeed * deltaTime;
     } 
-    else { 
-        if(moveSpeed > 0) {
-            moveSpeed -= ((deltaTime * speedClamp) * 300) * deltaTime;
-            if(velocity.x > 0.f)
-            {
-                velocity.x = moveSpeed * deltaTime;
-            }
-            if(velocity.x < 0.f)
-            {
-                velocity.x = -moveSpeed * deltaTime;
-            }
-        }
-        else {
+    else {
+        if(moveSpeed < 1.f && moveSpeed > -1.f)
+        {
+            moveSpeed = 0.f;
             velocity.x = 0.f;
+            return;
+        }
+        if(moveSpeed > 0.f)
+        {
+            moveSpeed -= ((deltaTime * speedClamp) * 300) * deltaTime;
+        }
+        if(moveSpeed < 0.f)
+        {
+            moveSpeed += ((deltaTime * speedClamp) * 300) * deltaTime;
         }
     }
 
@@ -135,6 +133,7 @@ void Player::playerInputs() {
 }
 
 void Player::update(sf::RenderWindow& window){
+    velocity.x = moveSpeed * deltaTime;
     gravity_calc();
     playerInputs();
     collisionCheck();
